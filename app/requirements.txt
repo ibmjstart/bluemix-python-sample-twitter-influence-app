@@ -1,5 +1,5 @@
 bottle
-./tweepy
-./oauth2
+tweepy
+oauth2
 ./klout-master
 ./mongo-python-driver-master
