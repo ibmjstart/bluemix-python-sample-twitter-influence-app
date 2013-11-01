@@ -76,6 +76,7 @@
   <div>
   <h2 class="text-center"><img src="/static/twitter_logo.png" class="img-rounded"><em>Twitter Influence Analyzer</em><h2> </div>
   <br/>
+  <div id="error"></div>
   <form action="/dispcalc" method="post" class="form-search" name="twitterQuery" id="twitterQuery">
   <p style="text-align: center"> 
   <input type="text" name="twitter_name" value="" placeholder="Enter Twitter Name" class="input-large"/>
