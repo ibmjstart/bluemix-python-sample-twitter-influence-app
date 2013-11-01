@@ -236,7 +236,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
   </form>
   </td>
   <td>
-  <form action="/displayall" method="post">
+  <form action="/displayall" method="GET">
   <input type="submit" value="View Database" class="btn btn-primary">
   </form>
   </td>
