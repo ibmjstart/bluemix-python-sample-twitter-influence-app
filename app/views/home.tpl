@@ -76,26 +76,13 @@
   <div>
   <h2 class="text-center"><img src="/static/twitter_logo.png" class="img-rounded"><em>Twitter Influence Analyzer</em><h2> </div>
   <br/>
-  <form action="/dispcalc" method="post" class="form-search">
+  <form action="/dispcalc" method="post" class="form-search" name="twitterQuery" id="twitterQuery">
   <p style="text-align: center"> 
   <input type="text" name="twitter_name" value="" placeholder="Enter Twitter Name" class="input-large"/>
   <input type="submit" value="Analyze!" class="btn btn-info">
   </p>
   </form>
   
-<!--
-  </tr>
-
-  <tr>
-  <form action="/dispcalc" method="post">
-  <td>Twitter Name:</td>
-  <td><input type="text" name="twitter_name" value="" size="20" maxlength="100" /></td>
-  <td><input type="hidden" name="lucky" value="Y">
-  <input type="submit" value="I\'m Feeling Lucky!"></td>
-  </form>
-  </tr>
- 
-  </table>  -->
   
   <form action="/displayall" method="post" class="form-search">
   <p style="text-align:center">
@@ -105,5 +92,16 @@
  
   </div> <!-- end of the hero-unit-->
   </div> <!-- end of the container-->
+  
+  <script>
+  $(document).ready(function() {
+      $('#twitterQuery').submit(function( event ) {
+        if(!document.forms["twitterQuery"]["twitter_name"].value.match(/^[0-9a-z]+$/)) {
+         $('#error').html('<div class="alert alert-danger">Twitter name must only contain alphanumeric characters</div>');
+         event.preventDefault();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
