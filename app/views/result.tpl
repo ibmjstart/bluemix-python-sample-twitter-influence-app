@@ -174,7 +174,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
           <a class="brand pull-left" href="/"><em>Twitter Influence Analyzer </em><small>v1.0</small></a>
 	  
           <div class="nav-collapse collapse">
-           	<form action="/dispcalc" method="post" class="navbar-form pull-right">
+           	<form action="/dispcalc" method="post" class="navbar-form pull-right" name="twitterQuery" id="twitterQuery">
  		<input class="span3" type="text" name="twitter_name" value="" placeholder="Enter Twitter Name" />
 		<input type="submit" value="Analyze!" class= "btn btn-info">
   		</form>
@@ -183,6 +183,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
       </div>
   </div>  <!-- end of div for nav bar-->
 
+<div id="error"></div>
 
 <div class="container-fluid">
   <div class="row-fluid">
@@ -271,5 +272,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </div>  <!-- end the div row-fluid -->
 </div>  <!-- ends the div container-fluid --> 
 
+<script>
+  $(document).ready(function() {
+      $('#twitterQuery').submit(function( event ) {
+        if(!document.forms["twitterQuery"]["twitter_name"].value.match(/^[0-9a-z]+$/)) {
+         $('#error').html('<div class="alert alert-danger">Twitter name must only contain alphanumeric characters</div>');
+         event.preventDefault();
+        }
+      });
+    });
+  </script>
+  
+  
 </body>
   </html>
