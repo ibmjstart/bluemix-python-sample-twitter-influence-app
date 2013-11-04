@@ -138,7 +138,6 @@ def testFunc():
 @bottle.post("/dispcalc")
 def calcInfo():
 	t_name = request.forms.get('twitter_name')
-	t_name = t_name.replace('#', '')
 	a_user = api.get_user(t_name)
 	fcount = a_user.followers_count
 	rtweets = api.user_timeline(t_name)
