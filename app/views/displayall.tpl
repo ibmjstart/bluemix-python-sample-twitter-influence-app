@@ -145,6 +145,9 @@
 	 
   </div>
   
+  </div> <!-- end of the hero-unit-->
+  </div> <!-- end of the container-->
+  
   <script>
   $(document).ready(function() {
       $('#twitterQuery').submit(function( event ) {
@@ -155,14 +158,10 @@
       });
     });
   </script>
-  
+
   </body>
   
   </html>
-
-  </div> <!-- end of the hero-unit-->
-  </div> <!-- end of the container-->
-
 
 
 </body>
