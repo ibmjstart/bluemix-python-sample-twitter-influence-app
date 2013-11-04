@@ -48,7 +48,7 @@ You can register the app with Klout [here](http://developer.klout.com/member/). 
 This app uses the Google Maps v3 APIs. Google APIs are open for the developers and you do not need to register the app with Google. Here's the [link](https://developers.google.com/maps/documentation/javascript/tutorial) for the Google Maps APIs.
 
 Screen-shot of the wsgi.py file that shows where the Twitter keys and access tokens and Klout developer key is entered: 
-![image](/images/config.png)
+![image](images/config.png)
 
 ## Deploying the App ##
 
@@ -68,7 +68,7 @@ Note: This app expects details of the mongoDB service to be present in the envir
 
 Here are a few snapshots of how you would deploy the app and bind existing services to it.
 
-![image](/images/deploy.png)
+![image](images/deploy.png)
 
 After the application is deployed using 'cf push', you can check the status of the app using the following command: 'cf apps'. If the status is RUNNING, you can hit the URL in the browser and see the application is running.
 
@@ -82,12 +82,12 @@ You should not need to do this to deploy this app because the dependencies are a
 
 This is the home screen of the app. You can enter a twitter screen name in the text box and click the Analyze button to see their influence. You can also view any records saved in the database by clicking on the 'View Database' button.
     
-![image](/images/home.png)
+![image](images/home.png)
 
 After entering the twitter name and clicking the Analyze button, you'll be able to see the influence analysis of that person on the left side. You will also see their last 10 tweets and any recent mentions in the tweets plotted on Google Maps (if there is geolocation data for a tweet).
     
-![image](/images/results.png)
+![image](images/results.png)
 
 These are the records of the Influencers in the database. The user can export the records as csv file. There is also a feature to send the records in csv format to any person via email using the SMTP service, if the SMTP service is not bound to the application you can not do this and the features will be disabled. 
     
-![image](/images/saved_records.png)
+![image](images/saved_records.png)
