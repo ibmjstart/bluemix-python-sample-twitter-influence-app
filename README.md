@@ -1,5 +1,13 @@
 # How to Run and Deploy the Twitter Influence Analyzer #
 
+## Overview of the app ##
+
+This is a Python app that uses the [Bottle framework](http://bottlepy.org/docs/dev/) and the following services:
+
+-   MongoDB (backend database)
+-   SMTP (email notification service)
+-   If this service is not available, the app will disable all features associated with sending email automatically. To enable the email notification features, just bind to the SMTP service to the app and then restart your app with the command **cf restart [appname]** or just **cf restart** if you are in the same directory as your app and its manifest.yml file. 
+
 ## Prerequisites ##
 
 Before we begin, we first need to install the command line tool that will be used to upload and manage your application. Cloud Foundry uses a tool called [**cf**](https://github.com/cloudfoundry/cf). This tool is written in Ruby, so you must have Ruby installed. If you are running on Windows, you can install Ruby from [this](http://rubyinstaller.org/downloads/) website. 
@@ -20,15 +28,6 @@ The source for this app is at GitHub so, for example, if you are using the comma
 
 		git clone https://github.com/ibmjstart/bluemix-python-sample-twitter-influence-app.git
 		
-		
-## Overview of the app ##
-
-This is a Python app that uses the [Bottle framework](http://bottlepy.org/docs/dev/) and the following services:
-
--   MongoDB (backend database)
--   SMTP (email notification service)
-	-   If this service is not available, the app will disable all features associated with sending email automatically. To enable the email notification features, just bind to the SMTP service to the app and then restart your app with the command **cf restart [appname]** or just **cf restart** if you are in the same directory as your app and its manifest.yml file. 
-
 ## External and Public APIs ##
 
 This app uses some external APIs. You need to register the app with Twitter and Klout to get the keys and tokens for the wsgi.py file.
