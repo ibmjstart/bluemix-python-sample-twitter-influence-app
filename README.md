@@ -14,19 +14,19 @@ Before we begin, we first need to install the command line tool that will be use
 
 For Linux systems, consult your documentation for how to install the **ruby** package - for Ubuntu the command:
 
-		apt-get install ruby
+	apt-get install ruby
 
 should work for you.
 
 Once Ruby is installed, cf can be installed by using the **gem install** command:
         
-		gem install cf
+	gem install cf
 		
 ## Download the App ##
 
 The source for this app is at GitHub so, for example, if you are using the command line you can clone the repository like this:
 
-		git clone https://github.com/ibmjstart/bluemix-python-sample-twitter-influence-app.git
+	git clone https://github.com/ibmjstart/bluemix-python-sample-twitter-influence-app.git
 		
 ## External and Public APIs ##
 
@@ -54,7 +54,7 @@ Screen-shot of the wsgi.py file that shows where the Twitter keys and access tok
 After including the Twitter/Klout keys and tokens in the wsgi.py file (as shown above), you are ready to deploy the app. In the
 terminal, go in the directory of the app (where wsgi.py is located). You can deploy/push the app using the push command:
 
-		cf push --buildpack=https://github.com/ibmjstart/heroku-buildpack-python-05June2013.git --command="python ./wsgi.py"
+	cf push --buildpack=https://github.com/ibmjstart/heroku-buildpack-python-05June2013.git --command="python ./wsgi.py"
 
 Just follow the instructions on the screen. You can select the default settings for deploying the app, i.e. for URL, memory reservations (512 Recommended), number of instances. You need to bind the MongoDB service to the application.
 
