@@ -53,7 +53,7 @@ terminal, go in the directory of the app (where wsgi.py is located). Multiple me
 
 4. Next, click on "Deploy".  This will use information within the **manifest.yml** to deploy the sample application directly into the codename: BlueMix platform.
 
-  ![image](images/Deploy.png)
+  ![image](images/deploy.png)
 
   You may continue to deploy changes to your BlueMix application directly from JazzHub using the "Deploy" and "Deploy As" buttons.
 
