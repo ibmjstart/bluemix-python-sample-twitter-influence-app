@@ -42,7 +42,7 @@ terminal, go in the directory of the app (where wsgi.py is located). Multiple me
 2. [Command-Line](#method-command-line) 
 
 ### Method: IBM JazzHub ###
-1. Browse to the JazzHub project repository located [here](http://example.com).  
+1. Browse to the JazzHub project repository located [here](https://hub.jazz.net/project/jstart/Twitter%20Influence%20Analyzer%20%28Python%29/overview).  
 2. Click on "Fork".  This will provide you with a personal copy of the code within your JazzHub project space.
 
   ![image](images/forkProject.png)
