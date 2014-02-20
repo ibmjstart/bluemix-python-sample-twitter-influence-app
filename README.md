@@ -5,19 +5,6 @@
 This is a Python app that uses the [Bottle framework](http://bottlepy.org/docs/dev/) and the following services:
 
 -   MongoDB (backend database)
-
-## License ##
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
-## Prerequisites ##
-
-Before we begin, we first need to install the [**cf**](https://github.com/cloudfoundry/cli/releases) command line tool that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using v6 of cf by passing it the -v flag:
-
-    cf -v
 		
 ## Download the App ##
 
@@ -49,10 +36,41 @@ Screen-shot of the wsgi.py file that shows where the Twitter keys and access tok
 ## Deploying the App ##
 
 After including the Twitter/Klout keys and tokens in the wsgi.py file (as shown above), you are ready to deploy the app. In the
-terminal, go in the directory of the app (where wsgi.py is located). You can deploy/push the app using these commands:
+terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below are two of those methods:
+
+1. [IBM JazzHub](#method-ibm-jazzhub)
+2. [Command-Line](#method-command-line) 
+
+### Method: IBM JazzHub ###
+1. Browse to the JazzHub project repository located [here](http://example.com).  
+2. Click on "Fork".  This will provide you with a personal copy of the code within your JazzHub project space.
+
+  ![image](images/forkProject.png)
+
+3. Located in the base of the project, rename **manifest.yml.v5** to **manifest.yml**
+
+  ![image](images/RenameManifest.png)
+
+4. Next, click on "Deploy".  This will use information within the **manifest.yml** to deploy the sample application directly into the codename: BlueMix platform.
+
+  ![image](images/Deploy.png)
+
+  You may continue to deploy changes to your BlueMix application directly from JazzHub using the "Deploy" and "Deploy As" buttons.
+
+5. Next, click on the Root Project Name and scroll to the **Manual Deployment Information** section.
+
+  ![image](images/Manage.png)
+
+  You can check the status of the app using this section. If a green filled circle is visible, you may click the Application Name shown within the section and interact with the running application.  However, if a red filled circle is displayed, you may click **Manage** and directly interact with the BlueMix User interface for further investigation and debugging. 
 
 ### Method: Command-Line ###
+#### Prerequisites ####
 
+Before we begin, we first need to install the [**cf**](https://github.com/cloudfoundry/cli/releases) command line tool that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using v6 of cf by passing it the -v flag:
+
+    cf -v
+
+#### Steps ####
 In the terminal, go to the directory of the app, and follow these steps.
 
 1. Login to Bluemix.
@@ -106,3 +124,10 @@ After entering the twitter name and clicking the Analyze button, you'll be able 
 These are the records of the Influencers in the database. The user can export the records as csv file. There is also a feature to send the records in csv format to any person via email using the SMTP service, if the SMTP service is not bound to the application you can not do this and the features will be disabled. 
     
 ![image](images/saved_records.png)
+
+## License ##
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
