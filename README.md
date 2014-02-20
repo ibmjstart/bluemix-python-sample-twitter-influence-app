@@ -5,8 +5,6 @@
 This is a Python app that uses the [Bottle framework](http://bottlepy.org/docs/dev/) and the following services:
 
 -   MongoDB (backend database)
--   SMTP (email notification service)
--   If this service is not available, the app will disable all features associated with sending email automatically. To enable the email notification features, just bind to the SMTP service to the app and then restart your app with the command **cf restart [appname]** or just **cf restart** if you are in the same directory as your app and its manifest.yml file. 
 
 ## License ##
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
@@ -17,17 +15,9 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ## Prerequisites ##
 
-Before we begin, we first need to install the command line tool that will be used to upload and manage your application. Cloud Foundry uses a tool called [**cf**](https://github.com/cloudfoundry/cf). This tool is written in Ruby, so you must have Ruby installed. If you are running on Windows, you can install Ruby from [this](http://rubyinstaller.org/downloads/) website. 
+Before we begin, we first need to install the [**cf**](https://github.com/cloudfoundry/cli/releases) command line tool that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using v6 of cf by passing it the -v flag:
 
-For Linux systems, consult your documentation for how to install the **ruby** package - for Ubuntu the command:
-
-	apt-get install ruby
-
-should work for you.
-
-Once Ruby is installed, cf can be installed by using the **gem install** command:
-        
-	gem install cf
+    cf -v
 		
 ## Download the App ##
 
@@ -59,24 +49,43 @@ Screen-shot of the wsgi.py file that shows where the Twitter keys and access tok
 ## Deploying the App ##
 
 After including the Twitter/Klout keys and tokens in the wsgi.py file (as shown above), you are ready to deploy the app. In the
-terminal, go in the directory of the app (where wsgi.py is located). You can deploy/push the app using the push command:
+terminal, go in the directory of the app (where wsgi.py is located). You can deploy/push the app using these commands:
 
-	cf push --buildpack=https://github.com/ibmjstart/heroku-buildpack-python-05June2013.git --command="python ./wsgi.py"
+### Method: Command-Line ###
 
-Just follow the instructions on the screen. You can select the default settings for deploying the app, i.e. for URL, memory reservations (512 Recommended), number of instances. You need to bind the MongoDB service to the application.
+In the terminal, go to the directory of the app, and follow these steps.
+
+1. Login to Bluemix.
+
+   | *usage:*   | `$ cf login [-a API_URL] [-o ORG] [-s SPACE]`|
+   |------------|----------------------------------------------|
+   | *example:* | `$ cf login -a https://api.ng.bluemix.net`   |
+
+2. Create an instance of the postgreSQL service, giving it a unique name in the last arguement.
+
+   | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`|
+   |------------|----------------------------------------------------|
+   | *example:* | `$ cf create-service mongodb 100 mongodb_PTIA`          |
+
+3. From the directory that houses the *wsgi.py* file, push the app with the --no-start option so we can bind our required service before starting.  Pass the -c flag to specify the start command that should be used by CloudFoundry to run your app.  Pass the -b flag to specify the Python build pack to be used, https://github.com/joshuamckenty/heroku-buildpack-python is recommended. Be sure to give your app a unique app name to be used as its host; for example, the example below would result in https://nmu.ng.bluemix.net.
+
+   | *usage:*   | `$ cf push APP [--no-manifest] [--no-start] [-c COMMAND]`                |
+   |------------|--------------------------------------------------------------------------|
+   | *example:* | `$ cf push ptia --no-manfiest --no-start -b https://github.com/joshuamckenty/heroku-buildpack-python -c "python ./wsgi.py"`|
+
+4. Bind the MongoDB service instance to the new app
+
+   | *usage:*   | `$ cf bind-service APP SERVICE_INSTANCE`|
+   |------------|-----------------------------------------|
+   | *example:* | `$ cf bind-service ptia mongodb_PTIA`       |
+
+5. Start the app
+
+   | *usage:*   | `$ cf start APP`                 |
+   |------------|----------------------------------|
+   | *example:* | `$ cf start ptia`                 |
 
 
-### Binding a Service to Your App ###
-
-Create the service instance and bind the service instance while deploying the app. The cf push command will ask, "Create services to bind to 'appname'?" Answer yes and go through the menu.
-
-Note: This app expects details of the mongoDB service to be present in the environment variables (os.enivron.get('VCAP\_SERVICES')) and will fail if you try to deploy it without first binding the service.
-
-Here are a few snapshots of how you would deploy the app and bind existing services to it.
-
-![image](images/deploy.png)
-
-After the application is deployed using 'cf push', you can check the status of the app using the following command: 'cf apps'. If the status is RUNNING, you can hit the URL in the browser and see the application is running.
 
 #### requirements.txt ####
 
