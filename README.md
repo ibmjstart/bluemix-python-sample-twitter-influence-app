@@ -36,32 +36,9 @@ Screen-shot of the wsgi.py file that shows where the Twitter keys and access tok
 ## Deploying the App ##
 
 After including the Twitter/Klout keys and tokens in the wsgi.py file (as shown above), you are ready to deploy the app. In the
-terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below are two of those methods:
+terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below is one of those methods:
 
-1. [IBM JazzHub](#method-ibm-jazzhub)
-2. [Command-Line](#method-command-line) 
-
-### Method: IBM JazzHub ###
-1. Browse to the JazzHub project repository located [here](https://hub.jazz.net/project/jstart/Twitter%20Influence%20Analyzer%20%28Python%29/overview).  
-2. Click on "Fork".  This will provide you with a personal copy of the code within your JazzHub project space.
-
-  ![image](images/forkProject.png)
-
-3. Located in the **app** folder of the project, rename **manifest.yml.v5** to **manifest.yml**
-
-  ![image](images/RenameManifest.png)
-
-4. Next, click on "Deploy".  This will use information within the **manifest.yml** to deploy the sample application directly into the codename: BlueMix platform.
-
-  ![image](images/deploy.png)
-
-  You may continue to deploy changes to your BlueMix application directly from JazzHub using the "Deploy" and "Deploy As" buttons.
-
-5. Next, click on the Root Project Name and scroll to the **Manual Deployment Information** section.
-
-  ![image](images/Manage.png)
-
-  You can check the status of the app using this section. If a green filled circle is visible, you may click the Application Name shown within the section and interact with the running application.  However, if a red filled circle is displayed, you may click **Manage** and directly interact with the BlueMix User interface for further investigation and debugging. 
+1. [Command-Line](#method-command-line) 
 
 ### Method: Command-Line ###
 #### Prerequisites ####
