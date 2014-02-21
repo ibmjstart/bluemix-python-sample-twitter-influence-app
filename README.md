@@ -47,7 +47,7 @@ terminal, go in the directory of the app (where wsgi.py is located). Multiple me
 
   ![image](images/forkProject.png)
 
-3. Located in the base of the project, rename **manifest.yml.v5** to **manifest.yml**
+3. Located in the **app** folder of the project, rename **manifest.yml.v5** to **manifest.yml**
 
   ![image](images/RenameManifest.png)
 
