@@ -66,7 +66,7 @@ In the terminal, go to the directory of the app, and follow these steps.
 
    | *usage:*   | `$ cf push APP [--no-manifest] [--no-start] [-c COMMAND]`                |
    |------------|--------------------------------------------------------------------------|
-   | *example:* | `$ cf push ptia --no-manfiest --no-start -b https://github.com/joshuamckenty/heroku-buildpack-python -c "python ./wsgi.py"`|
+   | *example:* | `$ cf push ptia --no-manifest --no-start -b https://github.com/joshuamckenty/heroku-buildpack-python -c "python ./wsgi.py"`|
 
 4. Bind the MongoDB service instance to the new app
 
