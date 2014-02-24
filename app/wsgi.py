@@ -64,8 +64,8 @@ from email.Utils import COMMASPACE, formatdate
 
 # Twitter OAuth Authentication params:
 # Enter the keys here that you get after registering the app with Bluemix
-consumer_key =   "consumer key here"
-consumer_secret= "consumer secret here"
+consumer_key =   "API key here"
+consumer_secret= "API secret here"
 access_token=  "access token here"
 access_token_secret= "access secret here"
 
