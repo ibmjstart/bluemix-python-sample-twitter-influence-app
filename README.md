@@ -56,7 +56,7 @@ In the terminal, go to the directory of the app, and follow these steps.
    |------------|----------------------------------------------|
    | *example:* | `$ cf login -a https://api.ng.bluemix.net`   |
 
-2. Create an instance of the postgreSQL service, giving it a unique name in the last arguement.
+2. Create an instance of the MongoDB service, giving it a unique name in the last arguement.
 
    | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`|
    |------------|----------------------------------------------------|
