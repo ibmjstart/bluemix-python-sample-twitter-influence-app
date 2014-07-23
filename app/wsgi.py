@@ -64,10 +64,10 @@ import pprint
 
 # Twitter OAuth Authentication params:
 # Enter the keys here that you get after registering the app with Bluemix
-consumer_key =   "9f7DK5EJbrHGJkmyFLIxw"
-consumer_secret= "S1adFa2uj6wkQD3AZ5AkQRqsbTzQupVINhzDn1tdc0"
-access_token=  "549573915-3C4bPpDbpDkP812Ra3iruLkIWOlcVHzebJJVTXHG"
-access_token_secret= "YO7GFlg4jKeCYTiespCaTmfkHNzd0GHWTGQLPY51621Nm"
+consumer_key =   ""
+consumer_secret= ""
+access_token=  ""
+access_token_secret= ""
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
