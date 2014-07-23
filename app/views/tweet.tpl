@@ -1,4 +1,4 @@
-% for j in range(0,10):
+% for j in range(0,min(len(rtweets), 10)):
 % 	tweettext = rtweets[j].text
 % 	retweetCount = rtweets[j].retweet_count
 % 	location = rtweets[j].user.location

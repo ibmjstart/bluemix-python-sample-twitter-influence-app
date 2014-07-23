@@ -45,12 +45,10 @@
 
 import bottle
 from bottle import *
-import os,sys,logging, traceback, json, string, urllib, urllib2,oauth2
+import os,sys,logging, traceback, json, string, urllib, urllib2, oauth2
 import tweepy
 from klout import *
-import pymongo
-from pymongo import *
-from pymongo import Connection
+import cloudant
 import csv
 from StringIO import StringIO
 from smtplib import SMTPException
@@ -60,67 +58,73 @@ from email.mime.text import MIMEText
 from email.MIMEBase import MIMEBase
 from email import Encoders
 from email.Utils import COMMASPACE, formatdate
+import pprint
+
 
 
 # Twitter OAuth Authentication params:
 # Enter the keys here that you get after registering the app with Bluemix
-consumer_key =   "API key here"
-consumer_secret= "API secret here"
-access_token=  "access token here"
-access_token_secret= "access secret here"
+consumer_key =   "9f7DK5EJbrHGJkmyFLIxw"
+consumer_secret= "S1adFa2uj6wkQD3AZ5AkQRqsbTzQupVINhzDn1tdc0"
+access_token=  "549573915-3C4bPpDbpDkP812Ra3iruLkIWOlcVHzebJJVTXHG"
+access_token_secret= "YO7GFlg4jKeCYTiespCaTmfkHNzd0GHWTGQLPY51621Nm"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
-# ---- end of twitter constants ---- 
+# ---- end of twitter constants ----
 
 
 
-# Klout Constants and Objects 
+# Klout Constants and Objects
 # Here the Klout Developer Key should be entered after registering the app with Klout
 k = Klout('klout key here')
-# ----- 
+# -----
 
 smtp_flag = False;
 
-# MongoDB configs from BlueMix 
+# cloudant configs from BlueMix
 vcap_config = os.environ.get('VCAP_SERVICES')
 decoded_config = json.loads(vcap_config)
 
 for key, value in decoded_config.iteritems():
-	if key.startswith('mongodb'):
-		mongo_creds = decoded_config[key][0]['credentials']
+	if key.startswith('cloudantNoSQLDB'):
+		cloudant_creds = decoded_config[key][0]['credentials']
 	if 'SMTP' in key:
 		smtp_creds = decoded_config[key][0]['credentials']
 		smtp_flag = True
 
 if smtp_flag:
-	smtp_host = str(smtp_creds['smtpHost'])   
+	smtp_host = str(smtp_creds['smtpHost'])
 	smtp_port = str(smtp_creds['smtpPort'])
 
-mongo_host = mongo_creds['hostname']
-mongo_port = int(mongo_creds['port'])
-mongo_username = mongo_creds['username']
-mongo_password = mongo_creds['password']
-mongo_db = mongo_creds['db']
-mongo_url = str(mongo_creds['url'])
-mongo_name = mongo_creds['name']
+cloudant_host = cloudant_creds['host']
+cloudant_port = int(cloudant_creds['port'])
+cloudant_username = cloudant_creds['username']
+cloudant_password = cloudant_creds['password']
+cloudant_url = str(cloudant_creds['url'])
 
-# --- configuring mongo 
-client = pymongo.Connection(mongo_url)
-mongoDB = client[mongo_db]
-infcoll = mongoDB.infcollection
 
-# ---- end of mongo config ---------- 
+# --- configuring cloudant
+account = cloudant.Account(cloudant_username)
+login = account.login(cloudant_username, cloudant_password)
+assert login.status_code == 200
+
+# create the database
+db = account.database('twitter-influence-analyzer')
+# put it on the server
+response = db.put()
+# check it out
+print response.json
+# ---- end of cloudant config ----------
 
 # ---- SMTP configs from Bluemix
 # Uncomment this part if the SMTP service becomes available in BlueMix
 
-
 # print "This is the smtp host: ", smtp_host, " and this is the smtp port: ", smtp_port
 
-# -- end of SMTP configs  
+# -- end of SMTP configs
 
 #Provide all the static css and js files under the static dir to browser
 @route('/static/:filename#.*#')
@@ -141,7 +145,9 @@ def calcInfo():
 	a_user = api.get_user(t_name)
 	fcount = a_user.followers_count
 	rtweets = api.user_timeline(t_name)
-	
+	pprint.pprint(rtweets[0])
+	pprint.pprint(len(rtweets))
+
 	mcount = 0
 	url_params = {}
 	url_params['q'] = '@'+t_name
@@ -149,24 +155,24 @@ def calcInfo():
 	url_params['result_type']='recent'
 	result = rest_req('api.twitter.com','/1.1/search/tweets.json',url_params,consumer_key,consumer_secret,access_token,access_token_secret)
 	# print result
-	
+
 	main_params = {}
 	main_params['q'] = '@'+t_name
 	main_params['count'] = 100
 	main_params['result_type'] = 'recent'
 	main_result = rest_req('api.twitter.com','/1.1/search/tweets.json',main_params,consumer_key,consumer_secret,access_token,access_token_secret)
-	
+
 	for i in main_result['statuses']:
 		mcount = mcount +1
-	
-	
+
+
 	rtcount = 0
-	for j in range(0,10):
+	for j in range(0,min(len(rtweets),10)):
 		"""tabletext = "{{tabletext}}" + '<tr><td>' + rtweets[j].text+ '</td>' + '<td>' + str(rtweets[j].retweet_count) + '</td></tr>'"""
 		rtcount = rtcount + rtweets[j].retweet_count
 	rtscore = 0
 	fscore = 0
-	
+
 	if rtcount >= 100000:
 		rtscore = 60
 	elif rtcount >= 20000:
@@ -183,7 +189,7 @@ def calcInfo():
 		rtscore = 5
 	elif rtcount >= 10:
 		rtscore = 1
-	
+
 	if fcount >= 10000000:
 		fscore = 40
 	elif fcount >= 1000000:
@@ -200,24 +206,24 @@ def calcInfo():
 		fscore = 10
 	elif fcount >= 10:
 		fscore = 5
-	
+
 	totalscore = rtscore + fscore + mcount
-	try: 
-		
+	try:
+
 		# Get kloutId of the user by inputting a twitter screenName
 		kloutId = k.identity.klout(screenName=t_name).get('id')
-		
+
 		# Get klout score of the user
 		score = k.user.score(kloutId=kloutId).get('score')
-	
+
 		# User Influences information
 		influences = k.user.influence(kloutId=kloutId)
-		
-		# User topics 
+
+		# User topics
 		topics = k.user.topics(kloutId=kloutId)
 	except:
 		score = "n/a"
-	
+
 	print "User's klout score is: %s" % (score)
 	# print "User's Influences: \n %s" % json.dumps(influences)
 	# print "User's topics: \n %s" % json.dumps(topics)
@@ -259,7 +265,7 @@ def rest_req(host, path, url_params, consumer_key, consumer_secret, token, token
 
   return response
 
-# Saves the data to the mongoDB
+# Saves the data to the cloudantDB
 @bottle.post('/savedata')
 def saveData():
 	t_name = str(request.forms.get('t_name'))
@@ -269,64 +275,70 @@ def saveData():
 	rtcount = int(request.forms.get('rtcount'))
 	rtscore = int(request.forms.get('rtscore'))
 	mcount = int(request.forms.get('mcount'))
-	existTest = infcoll.find({'twitname': t_name}).count()
-	if existTest == 0:
-		doc = {'twitname': t_name, 'totalscore': totalscore,'fcount': fcount,'fscore':fscore,'rtcount':rtcount,'rtscore': rtscore,'mcount': mcount}
-		insert_id = infcoll.insert(doc)
-		print "Document inserted"
-	else:
-		infcoll.update({'twitname': t_name},{"$set" : {'totalscore':totalscore}})
-		infcoll.update({'twitname': t_name},{"$set" : {'fcount':fcount}})
-		infcoll.update({'twitname': t_name},{"$set" : {'fscore': fscore}})
-		infcoll.update({'twitname': t_name},{"$set" : {'rtcount': rtcount}})
-		infcoll.update({'twitname': t_name},{"$set" : {'rtscore': rtscore}})
-		infcoll.update({'twitname': t_name},{"$set": {'mcount': mcount}})
-		print "Document Updated"
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
-	# print "this is the value: %d" % totinf
-	return bottle.template ('records',totinf=totinf,cursor=cursor, smtp_flag=smtp_flag)
 
+	# get document
+	d = db.document(t_name)
+	# merge updated information
+	resp = d.merge({ 'twitname': t_name, 'totalscore': totalscore, 'fcount': fcount, 'fscore': fscore , 'rtcount': rtcount, 'rtscore': rtscore, 'mcount': mcount})
+
+	bottle.redirect('/displayall')
 
 #  Displays all the records in the database
 @bottle.get('/displayall')
 def displayData():
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
+	# get all the documents
+	z = []
+	view = db.all_docs()
+	for doc in view.iter(params={'include_docs': True}):
+		z.append(doc['doc'])
+		pass
+	cursor = list(z)
+	pprint.pprint(cursor)
+	totinf = int(len(cursor))
 
 	"""'<a data-target="#myModal" class="btn btn-primary" data-toggle="modal">Send Records via Email</a>'"""
-	
+
 	return bottle.template ('records',totinf=totinf,cursor=cursor, smtp_flag=smtp_flag)
 
 # Removes all the records from the database
 @bottle.post('/clearall')
 def clearAll():
-	infcoll.remove()
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
-	print "this is the value: %d" % totinf
-	return bottle.template ('records',totinf=totinf,cursor=cursor, smtp_flag=smtp_flag)
+	# destroy DB
+	del account['twitter-influence-analyzer']
+	# recreate DB
+	db = account.database('twitter-influence-analyzer')
+	return bottle.template ('records',totinf=0,cursor=[], smtp_flag=smtp_flag)
 
 
 # Removes only the selected stuff from the database
 @bottle.post('/delselected')
 def removeSelected():
 	s = str(request.forms.get('twitname'))
-	infcoll.remove({'twitname' : s})
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
-	print "this is the value: %d" % totinf
-	return bottle.template ('records',totinf=totinf,cursor=cursor, smtp_flag=smtp_flag)
+	# document we want to delete
+	del_doc = db.document(s)
+	# iterate over all documents to find revision # for one we weant to delete
+	view = db.all_docs()
+	for doc in view.iter(params={'include_docs': True}):
+		if (doc['doc']['twitname'] == s):
+			rev = doc['doc']['_rev']
+			del_doc.delete(rev).raise_for_status()
+	bottle.redirect('/displayall')
 
-# output the data to the csv file 
+# output the data to the csv file
 @bottle.post('/outputcsv')
 def outputCSV():
 	# csv_file = StringIO()
 	fp = open('static/OUTPUT.csv', 'wb')
 	c = csv.writer(fp, delimiter=',',quoting=csv.QUOTE_ALL)
 	c.writerow(["Twitter Name","Mentions","Followers","Follower Score","Retweets","Retweet Score","Total Score"])
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
+	# get all the documents
+	z = []
+	view = db.all_docs()
+	for doc in view.iter(params={'include_docs': True}):
+		z.append(doc['doc'])
+		pass
+	cursor = list(z)
+	totinf = int(len(cursor))
 	for j in range(0, totinf):
 		c.writerow([cursor[j]['twitname'],cursor[j]['mcount'],cursor[j]['fcount'],cursor[j]['fscore'],cursor[j]['rtcount'],cursor[j]['rtscore'],cursor[j]['totalscore']])
 	fp.close()
@@ -336,18 +348,23 @@ def outputCSV():
 
 # sends the email and displays back the records page
 # This part can be uncommented if the SMTP Service is available in BlueMix
-
 @bottle.post('/sendmail')
 def sendEmail():
 	fp = open('static/OUTPUT.csv', 'wb')
 	c = csv.writer(fp, delimiter=',',quoting=csv.QUOTE_ALL)
 	c.writerow(["Twitter Name","Mentions","Followers","Follower Score","Retweets","Retweet Score","Total Score"])
-	cursor = list(infcoll.find())
-	totinf = int(infcoll.count())
+	# get all the documents
+	z = []
+	view = db.all_docs()
+	for doc in view.iter(params={'include_docs': True}):
+		z.append(doc['doc'])
+		pass
+	cursor = list(z)
+	totinf = int(len(cursor))
 	for j in range(0, totinf):
 		c.writerow([cursor[j]['twitname'],cursor[j]['mcount'],cursor[j]['fcount'],cursor[j]['fscore'],cursor[j]['rtcount'],cursor[j]['rtscore'],cursor[j]['totalscore']])
 	fp.close()
-	
+
 	receiver = request.forms.get('receiver')
 	sender = request.forms.get('sender')
 	message = 'Find attached the report from Twitter Influence Analyzer \n'
@@ -378,7 +395,7 @@ def sendEmail():
 		smtpObj.quit()
 	except smtplib.SMTPException:
 		print "Error: unable to send email"
-	
+
 	return bottle.template ('records',totinf=totinf,cursor=cursor, smtp_flag=smtp_flag)
 
 
