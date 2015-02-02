@@ -69,9 +69,10 @@ In the terminal, go to the directory of the app, and follow these steps.
    | *example:* | `$ cf bind-service ptia cloudant_PTIA`       |
 
 5. Create the environment variables that hold your twitter and klout keys
-   | *usage:*   | `$ cf set-env APP ENV_NAME VALUE`|
-   |------------|--------------------------------------------------------|
-   | *example:* | `$ cf set-env ptia consumerkey <your twitter consumer key>`|
+
+   | *usage:*   | `$ cf set-env APP ENV_NAME VALUE`                            |
+   |------------|--------------------------------------------------------------|
+   | *example:* | `$ cf set-env ptia consumerkey <your_twitter_consumer_key>`  |
    
    There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret,     and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
    
