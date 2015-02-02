@@ -30,15 +30,9 @@ You can register the app with Klout [here](http://developer.klout.com/member/). 
 
 This app uses the Google Maps v3 APIs. Google APIs are open for the developers and you do not need to register the app with Google. Here's the [link](https://developers.google.com/maps/documentation/javascript/tutorial) for the Google Maps APIs.
 
-Screen-shot of the wsgi.py file that shows where the Twitter keys and access tokens and Klout developer key is entered: 
-![image](images/config.png)
-
 ## Deploying the App ##
 
-After including the Twitter/Klout keys and tokens in the wsgi.py file (as shown above), you are ready to deploy the app. In the
-terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below is one of those methods:
-
-1. [Command-Line](#method-command-line) 
+In the terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below is the command line method:
 
 ### Method: Command-Line ###
 #### Prerequisites ####
@@ -74,7 +68,14 @@ In the terminal, go to the directory of the app, and follow these steps.
    |------------|-----------------------------------------|
    | *example:* | `$ cf bind-service ptia cloudant_PTIA`       |
 
-5. Start the app
+5. Create the environment variables that hold your twitter and klout keys
+   | *usage:*   | `$ cf set-env APP ENV_NAME VALUE`|
+   |------------|--------------------------------------------------------|
+   | *example:* | `$ cf set-env ptia consumerkey <your twitter consumer key>`|
+   
+   There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret,     and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
+   
+6. Start the app
 
    | *usage:*   | `$ cf start APP`                 |
    |------------|----------------------------------|
