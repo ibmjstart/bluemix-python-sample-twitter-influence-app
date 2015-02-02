@@ -275,7 +275,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 <script>
   $(document).ready(function() {
       $('#twitterQuery').submit(function( event ) {
-        if(!document.forms["twitterQuery"]["twitter_name"].value.match(/^[0-9a-z]+$/)) {
+        if(!document.forms["twitterQuery"]["twitter_name"].value.match(/^[0-9a-zA-Z]+$/)) {
          $('#error').html('<div class="alert alert-danger">Twitter name must only contain alphanumeric characters</div>');
          event.preventDefault();
         }

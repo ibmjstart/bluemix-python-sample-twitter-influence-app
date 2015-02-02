@@ -62,11 +62,11 @@ In the terminal, go to the directory of the app, and follow these steps.
    |------------|----------------------------------------------------|
    | *example:* | `$ cf create-service cloudantNoSQLDB Shared cloudant_PTIA`          |
 
-3. From the directory that houses the *wsgi.py* file, push the app with the --no-start option so we can bind our required service before starting.  Pass the -c flag to specify the start command that should be used by CloudFoundry to run your app.  Pass the -b flag to specify the Python build pack to be used, https://github.com/joshuamckenty/heroku-buildpack-python is recommended. Be sure to give your app a unique app name to be used as its host; for example, the example below would result in https://nmu.mybluemix.net.
+3. From the directory that houses the *wsgi.py* file, push the app with the --no-start option so we can bind our required service before starting.  Pass the -c flag to specify the start command that should be used by CloudFoundry to run your app.  Pass the -b flag to specify the Python build pack to be used, https://github.com/heroku/heroku-buildpack-python.git is recommended. Be sure to give your app a unique app name to be used as its host; for example, the example below would result in https://nmu.mybluemix.net.
 
    | *usage:*   | `$ cf push APP [--no-manifest] [--no-start] [-c COMMAND]`                |
    |------------|--------------------------------------------------------------------------|
-   | *example:* | `$ cf push ptia --no-manifest --no-start -b https://github.com/joshuamckenty/heroku-buildpack-python -c "python ./wsgi.py"`|
+   | *example:* | `$ cf push ptia --no-manifest --no-start -b https://github.com/heroku/heroku-buildpack-python.git -c "python ./wsgi.py"`|
 
 4. Bind the cloudant service instance to the new app
 
