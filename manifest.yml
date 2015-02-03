@@ -1,0 +1,15 @@
+---
+declared-services:
+  cloudant_PTIA:
+    type: cloudantNoSQLDB
+    plan: Shared 
+    
+applications:
+- name: TwitterInfluenceAnalyzerPython
+  buildpack: https://github.com/heroku/heroku-buildpack-python.git
+  memory: 256M
+  instances: 1
+  path: ./app/
+  command: python wsgi.py
+  services:
+  - cloudant_PTIA

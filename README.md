@@ -5,16 +5,24 @@
 This is a Python app that uses the [Bottle framework](http://bottlepy.org/docs/dev/) and the following services:
 
 -   Cloudant (backend database)
-		
-## Download the App ##
 
-The source for this app is at GitHub so, for example, if you are using the command line you can clone the repository like this:
+Give it a try! Click the button below to fork into IBM DevOps Services and deploy your own copy of this application on Bluemix. Note the app will not yet work; you need to set the environment variables.
 
-	git clone https://github.com/ibmjstart/bluemix-python-sample-twitter-influence-app.git
-		
+[![Deploy to Bluemix](images/deploy-button.png)](https://hub.jazz.net/code/cfui/bluemix/deploy.html?Repository=https://github.com/ibmjstart/bluemix-sample-tia-node.git)
+
+The environment variables are your Twitter and Klout API keys.
+
+To set them, click on your app within Bluemix, click `Environment Variables` on the left pane, then select `USER_DEFINED` to add the five necessary environment variables. Put in your information using the EXACT strings in the "Name" column:
+
+![image](images/setEnvVars.png)
+
+Hit save and you're done!
+
+___
+
 ## External and Public APIs ##
 
-This app uses some external APIs. You need to register the app with Twitter and Klout to get the keys and tokens for the wsgi.py file.
+This app uses some external APIs. You need to register the app with Twitter and Klout to get the keys and tokens for the environmental variables.
 
 ### Twitter v1.1 API ###
 
@@ -30,11 +38,10 @@ You can register the app with Klout [here](http://developer.klout.com/member/). 
 
 This app uses the Google Maps v3 APIs. Google APIs are open for the developers and you do not need to register the app with Google. Here's the [link](https://developers.google.com/maps/documentation/javascript/tutorial) for the Google Maps APIs.
 
-## Deploying the App ##
+___
 
-In the terminal, go in the directory of the app (where wsgi.py is located). Multiple methods exist for interacting with the BlueMix platform. Outlined below is the command line method:
+## [Alternatively] Deploying Via the Command-Line ##
 
-### Method: Command-Line ###
 #### Prerequisites ####
 
 Before we begin, we first need to install the [**cf**](https://github.com/cloudfoundry/cli/releases) command line tool that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using v6 of cf by passing it the -v flag:
@@ -42,45 +49,39 @@ Before we begin, we first need to install the [**cf**](https://github.com/cloudf
     cf -v
 
 #### Steps ####
-In the terminal, go to the directory of the app, and follow these steps.
+In the terminal, navigate to the root directory (where manifest.yml is located).
 
 1. Login to Bluemix.
 
    | *usage:*   | `$ cf login [-a API_URL] [-o ORG] [-s SPACE]`|
-   |------------|----------------------------------------------|
+   |------------|----------------------------------------------------|
    | *example:* | `$ cf login -a https://api.ng.bluemix.net`   |
 
-2. Create an instance of the MongoDB service, giving it a unique name in the last arguement.
+2. Create an instance of the CloudantDB service, giving it a the name, cloudant_PTIA, in the last arguement.
 
-   | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`|
-   |------------|----------------------------------------------------|
-   | *example:* | `$ cf create-service cloudantNoSQLDB Shared cloudant_PTIA`          |
+   | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`         |
+   |------------|--------------------------------------------------------------------|
+   | *example:* | `$ cf create-service cloudantNoSQLDB Shared cloudant_PTIA` |
 
-3. From the directory that houses the *wsgi.py* file, push the app with the --no-start option so we can bind our required service before starting.  Pass the -c flag to specify the start command that should be used by CloudFoundry to run your app.  Pass the -b flag to specify the Python build pack to be used, https://github.com/heroku/heroku-buildpack-python.git is recommended. Be sure to give your app a unique app name to be used as its host; for example, the example below would result in https://nmu.mybluemix.net.
+3. From the root directory, push the app with the --no-start option so we can set our environment variables. Be sure to give your app a unique name to be used as its host. For example, the example below would result in https://ptia.mybluemix.net.
 
-   | *usage:*   | `$ cf push APP [--no-manifest] [--no-start] [-c COMMAND]`                |
-   |------------|--------------------------------------------------------------------------|
-   | *example:* | `$ cf push ptia --no-manifest --no-start -b https://github.com/heroku/heroku-buildpack-python.git -c "python ./wsgi.py"`|
+   | *usage:*   | `$ cf push APP [--no-start]`   |
+   |------------|------------------------------------|
+   | *example:* | `$ cf push ptia --no-start`    |
 
-4. Bind the cloudant service instance to the new app
+4. Create the environment variables that hold your twitter and klout keys
 
-   | *usage:*   | `$ cf bind-service APP SERVICE_INSTANCE`|
-   |------------|-----------------------------------------|
-   | *example:* | `$ cf bind-service ptia cloudant_PTIA`       |
-
-5. Create the environment variables that hold your twitter and klout keys
-
-   | *usage:*   | `$ cf set-env APP ENV_NAME VALUE`                            |
-   |------------|--------------------------------------------------------------|
+   | *usage:*   | `$ cf set-env APP_NAME ENV_NAME VALUE`                          |
+   |------------|----------------------------------------------------------------------|
    | *example:* | `$ cf set-env ptia consumerkey <your_twitter_consumer_key>`  |
    
    There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret,     and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
    
-6. Start the app
+5. Start the app
 
-   | *usage:*   | `$ cf start APP`                 |
-   |------------|----------------------------------|
-   | *example:* | `$ cf start ptia`                 |
+   | *usage:*   | `$ cf start APP_NAME`      |
+   |------------|-------------------------------|
+   | *example:* | `$ cf start ptia`           |
 
 
 
