@@ -1,7 +1,7 @@
 ---
 declared-services:
   cloudant_PTIA:
-    type: cloudantNoSQLDB
+    label: cloudantNoSQLDB
     plan: Shared 
     
 applications:
