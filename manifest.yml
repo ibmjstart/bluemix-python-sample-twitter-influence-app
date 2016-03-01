@@ -6,7 +6,7 @@ declared-services:
     
 applications:
 - name: TwitterInfluenceAnalyzerPython
-  buildpack: https://github.com/heroku/heroku-buildpack-python.git
+  buildpack: https://github.com/cloudfoundry/python-buildpack
   memory: 256M
   instances: 1
   path: ./app/
