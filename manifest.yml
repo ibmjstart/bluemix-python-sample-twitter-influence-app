@@ -2,8 +2,8 @@
 declared-services:
   cloudant_PTIA:
     label: cloudantNoSQLDB
-    plan: Shared 
-    
+    plan: Lite 
+
 applications:
 - name: TwitterInfluenceAnalyzerPython
   buildpack: https://github.com/cloudfoundry/python-buildpack

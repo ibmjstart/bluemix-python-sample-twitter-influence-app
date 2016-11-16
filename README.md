@@ -61,7 +61,7 @@ In the terminal, navigate to the root directory (where manifest.yml is located).
 
    | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`         |
    |------------|--------------------------------------------------------------------|
-   | *example:* | `$ cf create-service cloudantNoSQLDB Shared cloudant_PTIA` |
+   | *example:* | `$ cf create-service cloudantNoSQLDB Lite cloudant_PTIA` |
 
 3. From the root directory, push the app with the --no-start option so we can set our environment variables. Be sure to give your app a unique name to be used as its host. For example, the example below would result in https://ptia.mybluemix.net.
 
@@ -74,9 +74,9 @@ In the terminal, navigate to the root directory (where manifest.yml is located).
    | *usage:*   | `$ cf set-env APP_NAME ENV_NAME VALUE`                          |
    |------------|----------------------------------------------------------------------|
    | *example:* | `$ cf set-env ptia consumerkey <your_twitter_consumer_key>`  |
-   
+
    There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret,     and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
-   
+
 5. Start the app
 
    | *usage:*   | `$ cf start APP_NAME`      |
@@ -94,15 +94,15 @@ You should not need to do this to deploy this app because the dependencies are a
 ## Screenshots ##
 
 This is the home screen of the app. You can enter a twitter screen name in the text box and click the Analyze button to see their influence. You can also view any records saved in the database by clicking on the 'View Database' button.
-    
+
 ![image](images/home.png)
 
 After entering the twitter name and clicking the Analyze button, you'll be able to see the influence analysis of that person on the left side. You will also see their last 10 tweets and any recent mentions in the tweets plotted on Google Maps (if there is geolocation data for a tweet).
-    
+
 ![image](images/results.png)
 
-These are the records of the Influencers in the database. The user can export the records as csv file. There is also a feature to send the records in csv format to any person via email using the SMTP service, if the SMTP service is not bound to the application you can not do this and the features will be disabled. 
-    
+These are the records of the Influencers in the database. The user can export the records as csv file. There is also a feature to send the records in csv format to any person via email using the SMTP service, if the SMTP service is not bound to the application you can not do this and the features will be disabled.
+
 ![image](images/saved_records.png)
 
 ## License ##
