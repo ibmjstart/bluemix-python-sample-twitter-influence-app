@@ -39,7 +39,8 @@ Before you can get your app running, you need to get Twitter and Klout API keys 
 
 10. Once you're in the Runtime section, click on "Environment Variables", and add your Twitter and Klout API keys as shown below: (make sure the environemnt variable names match EXACTLY what is shown below, as in your Twitter Consumer key should be named "consumerkey", your Twitter Consumer Secret as "consumersecret", your Access Token as "accesstoken", your Token Secret as as "tokensecret", and your Klout Developer Key as "kloutkey")
 
-![image](images/setEnvVars.png)
+
+![image](images/envvariables.png)
 
 Hit save and you're done!
 
