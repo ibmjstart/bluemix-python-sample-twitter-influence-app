@@ -42,54 +42,40 @@ Before you can get your app running, you need to get Twitter and Klout API keys 
 
 ![image](images/envvariables.png)
 
-Hit save and you're done!
-
+Hit save and you're done! Your app is now live! In order to access it, go back to to the dashboard, and click on your app's Route URL.
 ___
-
-## External and Public APIs ##
-
-This app uses some external APIs. You need to register the app with Twitter and Klout to get the keys and tokens for the environmental variables.
-
-### Twitter v1.1 API ###
-
-To access the Twitter API you need the consumer keys and access tokens, so you must register the app with Twitter. You can register your app [here](https://dev.twitter.com/).
-
-[More information on how to register the app with Twitter](registerTwitter.md)
-
-### Klout API ###
-
-You can register the app with Klout [here](http://developer.klout.com/member/). When you register with Klout, you'll get a Klout Key, which you can use to create a Klout Object as shown in the code.
 
 ### Google Maps v3 API ###
 
 This app uses the Google Maps v3 APIs. Google APIs are open for the developers and you do not need to register the app with Google. Here's the [link](https://developers.google.com/maps/documentation/javascript/tutorial) for the Google Maps APIs.
-
 ___
 
 ## [Alternatively] Deploying Via the Command-Line ##
 
-#### Prerequisites ####
-
-Before we begin, we first need to install the [**cf**](https://github.com/cloudfoundry/cli/releases) command line tool that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using v6 of cf by passing it the -v flag:
+#### Steps ####
+Before we begin, we first need to install the [**Bluemix Command Line Tool**] (http://clis.ng.bluemix.net/ui/home.html) as well as the [**CF Command Line Tool**](https://github.com/cloudfoundry/cli/releases) that will be used to upload and manage your application. If you've previously installed an older version of the cf tool, make sure you are now using cf v6 by passing it the -v flag:
 
     cf -v
 
-#### Steps ####
-In the terminal, navigate to the root directory (where manifest.yml is located).
+In the terminal, go to the directory of your app and follow these steps:
 
-1. Login to Bluemix.
+1. Create a git clone of this repository.
+    
+    git clone https://github.com/ibmjstart/bluemix-python-sample-twitter-influence-app.git
 
-   | *usage:*   | `$ cf login [-a API_URL] [-o ORG] [-s SPACE]`|
-   |------------|----------------------------------------------------|
+2. Navigate to the project directory and login to Bluemix.
+
+   | *usage:*   | `$ cf login [-a API_URL]`|
+   |:-----------|:---------------------------------------------|
    | *example:* | `$ cf login -a https://api.ng.bluemix.net`   |
 
-2. Create an instance of the CloudantDB service, giving it a the name, cloudant_PTIA, in the last arguement.
+3. Create an instance of the CloudantDB service, giving it a the name, cloudant_PTIA, in the last arguement.
 
    | *usage:*   | `$ cf create-service SERVICE PLAN SERVICE_INSTANCE`         |
    |------------|--------------------------------------------------------------------|
    | *example:* | `$ cf create-service cloudantNoSQLDB Lite cloudant_PTIA` |
 
-3. From the root directory, push the app with the --no-start option so we can set our environment variables. Be sure to give your app a unique name to be used as its host. For example, the example below would result in https://ptia.mybluemix.net.
+4. From the root directory, push the app with the --no-start option so we can set our environment variables. Be sure to give your app a unique name to be used as its host. For example, the example below would result in https://ptia.mybluemix.net.
 
    | *usage:*   | `$ cf push APP [--no-start]`   |
    |------------|------------------------------------|
@@ -101,15 +87,29 @@ In the terminal, navigate to the root directory (where manifest.yml is located).
    |------------|----------------------------------------------------------------------|
    | *example:* | `$ cf set-env ptia consumerkey <your_twitter_consumer_key>`  |
 
-   There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret,     and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
+   There are five environment variables that you must set this way: your twitter consumer key, twitter consumer secret, twitter access token, twitter access token secret, and your klout key. Each need to be given their respective names (EXACTLY as follows): consumerkey, consumersecret, accesstoken, tokensecret, and kloutkey.
 
 5. Start the app
 
    | *usage:*   | `$ cf start APP_NAME`      |
    |------------|-------------------------------|
    | *example:* | `$ cf start ptia`           |
+   
+Congrats! Your app is now live on Bluemix. In your terminal, you should have recieved an output similar to the one below:
 
+    requested state: started
+    instances: 1/1
+    usage: 256M x 1 instances
+    urls: ptia.mybluemix.net
+    last uploaded: Sun Jan 15 23:00:58 UTC 2017
+    stack: cflinuxfs2
+    buildpack: https://github.com/cloudfoundry/python-buildpack
 
+         state     since                    cpu    memory         disk         details
+    #0   running   2017-01-15 06:14:06 PM   0.0%   1.1M of 256M   1.3M of 1G
+    gokuls-mbp:bluemix-python-sample-twitter-influence-app gokulkumarresen$ 
+
+In order to view your app, copy and paste what follows the "urls: " tag in the output above into your browser. Enjoy!
 
 #### requirements.txt ####
 
